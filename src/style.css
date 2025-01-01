@@ -2,12 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@supports (height: 100dvh) {
+  :root {
+    --viewport-height: 100dvh;
+    --viewport-width: 100dvw;
+  }
+}
+@supports not (height: 100dvh) {
+  :root {
+    --viewport-height: 100vh;
+    --viewport-width: 100vw;
+  }
+}
+
 body,
 #app {
   @apply bg-black text-white;
 
-  height: 100vh;
-  width: 100vw;
+  height: var(--viewport-height);
+  width: var(--viewport-width);
 }
 
 h1 {
