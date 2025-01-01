@@ -1,5 +1,5 @@
-import { reactive, ref } from 'vue';
-import type { Reactive, Ref } from 'vue';
+import { ref } from 'vue';
+import type { Ref } from 'vue';
 
 interface CompactBlackCard {
     text: string
