@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+#app {
+  @apply bg-black text-white;
+
+  min-height: 100vh;
+  min-width: 100vw;
+}
