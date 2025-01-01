@@ -43,7 +43,7 @@ function submit() {
           | Made by <a href="https://github.com/lynzrand">Rynco Maekawa</a>
         </p>
       </div>
-      <div class="flex flex-col space-y-4 pt-20">
+      <div class="flex flex-col space-y-4 md:pt-20">
         <Input v-model="seed" label="Random seed" />
         <Input v-model="nPeople" label="Number of people" />
         <Input v-model="idxPerson" label="Your index within people" />
