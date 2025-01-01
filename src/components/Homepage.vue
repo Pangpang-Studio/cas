@@ -30,6 +30,18 @@ function submit() {
 function randomSeed() {
   seed.value = Math.random().toString(36).substring(2, 7).toUpperCase()
 }
+
+const authors = [
+  {
+    name: 'Rynco Maekawa',
+    link: 'https://github.com/lynzrand',
+  },
+  {
+    name: 'Rami3L',
+    link: 'https://github.com/rami3l',
+  },
+  { name: 'Icecovery', link: 'https://github.com/icecovery' },
+]
 </script>
 
 <template>
@@ -38,16 +50,25 @@ function randomSeed() {
       <div>
         <h1 class="text-3xl font-bold">Cards Against Synchronicity</h1>
         <p>
-          A Cards Against Humanity implementation that doesn't require a central
-          server.
+          A Cards Against Humanity implementation for offline parties, without
+          the need of a central server to coordinate the game. This webpage
+          serves as your card deck.
         </p>
         <p>Best played on phones.</p>
-        <p class="text-sm text-gray-500">
-          <a href="https://github.com/lynzrand/cards-against-synchronicity"
-            >Source code</a
-          >
-          | Made by <a href="https://github.com/lynzrand">Rynco Maekawa</a>
-        </p>
+        <div class="text-sm text-gray-500">
+          <p>
+            <a href="https://github.com/lynzrand/cards-against-synchronicity"
+              >Source code</a
+            >
+          </p>
+          <p>
+            Made by
+            <template v-for="(author, i) in authors" :key="i">
+              <a :href="author.link">{{ author.name }}</a
+              >{{ i < authors.length - 1 ? ', ' : '' }}
+            </template>
+          </p>
+        </div>
       </div>
       <div class="flex flex-col space-y-4 md:pt-20">
         <div class="flex gap-2 justify-between items-end">

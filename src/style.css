@@ -28,11 +28,13 @@ h1 {
 }
 
 p {
-  @apply py-3 text-gray-300;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
 }
 
 a {
   @apply underline;
+  color: inherit;
 }
 
 input,
