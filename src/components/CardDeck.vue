@@ -47,35 +47,88 @@ function cardSelectIdx(i: number) {
   return selectedIndices.value.indexOf(i);
 }
 
+const submitMode = ref(false);
+
 function submit() {
-  game!.submitCards(selectedIndices.value);
+  submitMode.value = true;
 }
 
 function goToNextRound() {
+  submitMode.value = false;
+  game!.submitCards(selectedIndices.value);
+  selectedIndices.value = [];
   game!.drawBlack();
+}
+
+function formatCard(card: string) {
+  return card.replace(/_/g, "______");
 }
 </script>
 
 <template>
   <template v-if="loaded && game">
-    <div class="bg-black p-4 rounded-lg text-lg bold">
-      {{ game.blackCard.value.text }}
-    </div>
-    <template v-for="(card, i) in game.whiteCards.value" :key="i">
-      <div
-        class="bg-white p-4 rounded-lg text-black m-4"
-        :class="{ 'bg-gray-300': selectedIndices.includes(i) }"
-        @click="selectCard(i)"
-      >
-        {{ card }}
-        <template v-if="cardSelectIdx(i) !== -1">
-          <div class="text-sm text-gray-500">({{ cardSelectIdx(i) + 1 }})</div>
+    <div class="flex flex-col h-full" v-if="submitMode === false">
+      <div class="bg-black p-4 rounded-lg text-xl font-bold">
+        {{ formatCard(game.blackCard.value.text) }}
+      </div>
+      <div class="flex-1 overflow-scroll grid grid-cols-1 gap-2 mx-2">
+        <template v-for="(card, i) in game.whiteCards.value" :key="i">
+          <div
+            class="bg-white p-4 rounded-lg text-black grid grid-cols-6 min-h-20"
+            :class="{ 'bg-gray-300': selectedIndices.includes(i) }"
+            @click="selectCard(i)"
+          >
+            <div class="col-span-5">
+              {{ card }}
+            </div>
+            <div class="text-sm text-gray-500 col-span-1 text-right">
+              <template v-if="cardSelectIdx(i) !== -1">
+                ({{ cardSelectIdx(i) + 1 }})
+              </template>
+            </div>
+          </div>
         </template>
       </div>
-    </template>
-    <button @click="submit">Submit</button>
-    <button @click="goToNextRound">Next round</button>
+      <div class="flex flex-row p-2 gap-4">
+        <button
+          @click="submit"
+          class="basis-0 flex-1 bg-blue-700 p-2 rounded-md"
+        >
+          Submit
+        </button>
+        <button
+          @click="goToNextRound"
+          class="basis-0 flex-1 bg-gray-700 p-2 rounded-md"
+        >
+          Next round
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-col h-full" v-else>
+      <!-- Show submitted cards -->
+      <div class="bg-black p-4 rounded-lg text-lg bold">
+        {{ formatCard(game.blackCard.value.text) }}
+      </div>
+      <div class="flex-1 overflow-scroll flex flex-col gap-2 mx-2">
+        <template v-for="idx in selectedIndices" :key="idx">
+          <div
+            class="bg-white p-4 rounded-lg text-black text-3xl font-bold min-h-40 grow flex-shrink-0"
+          >
+            {{ game.whiteCards.value[idx] }}
+          </div>
+        </template>
+      </div>
+      <div class="p-2 flex flex-row">
+        <button
+          @click="goToNextRound"
+          class="basis-0 flex-1 bg-gray-700 p-2 rounded-md"
+        >
+          Next round
+        </button>
+      </div>
+    </div>
   </template>
+
   <template v-else>
     <div>Loading...</div>
   </template>
