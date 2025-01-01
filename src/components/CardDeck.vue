@@ -103,8 +103,8 @@ function formatCard(card: string) {
                   class="bg-black text-white rounded-full flex justify-center items-center font-bold text-sm w-6 h-6 md:text-base md:w-6 md:h-6"
                 >
                   {{ cardSelectIdx(i) + 1 }}
-                </div></template
-              >
+                </div>
+              </template>
             </div>
           </div>
         </template>
