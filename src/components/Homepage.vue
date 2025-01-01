@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Input from './Input.vue'
+import { useRouter } from 'vue-router'
 
 export interface SubmitData {
   seed: string
@@ -9,25 +10,21 @@ export interface SubmitData {
   cardPerPerson: number
 }
 
-const emit = defineEmits<{
-  (e: 'submit', v: SubmitData): void
-}>()
-
 const seed = ref<string>('')
 const nPeople = ref<number>(4)
 const idxPerson = ref<number>(0)
 const cardPerPerson = ref<number>(10)
 
-const submittedData = ref<SubmitData | null>(null)
+const router = useRouter()
 
 function submit() {
-  submittedData.value = {
+  const submittedData = {
     seed: seed.value as string,
     nPeople: nPeople.value as number,
-    idxPerson: (idxPerson.value as number) % (nPeople.value as number),
     cardPerPerson: cardPerPerson.value as number,
+    idxPerson: (idxPerson.value as number) % (nPeople.value as number),
   }
-  emit('submit', submittedData.value!)
+  router.push({ name: 'game', query: submittedData })
 }
 
 function randomSeed() {
