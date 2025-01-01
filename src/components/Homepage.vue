@@ -40,24 +40,35 @@ function randomSeed() {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
         <h1 class="text-3xl font-bold">Cards Against Synchronicity</h1>
-        <p>A Cards Against Humanity implementation that doesn't require a central server.</p>
+        <p>
+          A Cards Against Humanity implementation that doesn't require a central
+          server.
+        </p>
         <p>Best played on phones.</p>
         <p class="text-sm text-gray-500">
-          <a href="https://github.com/lynzrand/cards-against-synchronicity">Source code</a>
+          <a href="https://github.com/lynzrand/cards-against-synchronicity"
+            >Source code</a
+          >
           | Made by <a href="https://github.com/lynzrand">Rynco Maekawa</a>
         </p>
       </div>
       <div class="flex flex-col space-y-4 md:pt-20">
-        <div class="flex gap-2 justify-between items-end" >
-          <Input v-model="seed" label="Random seed" class="flex-grow"/>
-          <button @click="randomSeed" class="dice-button py-2.5 px-3 bg-gray-600 hover:bg-gray-700 rounded-md">
+        <div class="flex gap-2 justify-between items-end">
+          <Input v-model="seed" label="Random seed" class="flex-grow" />
+          <button
+            @click="randomSeed"
+            class="dice-button py-2.5 px-3 bg-gray-600 hover:bg-gray-700 rounded-md"
+          >
             <span>🎲</span>
           </button>
         </div>
         <Input v-model="nPeople" label="Number of people" />
         <Input v-model="idxPerson" label="Your index within people" />
         <Input v-model="cardPerPerson" label="Number of cards per person" />
-        <button @click="submit" class="self-stretch p-4 bg-blue-600 hover:bg-blue-700 rounded-md">
+        <button
+          @click="submit"
+          class="self-stretch p-4 bg-blue-600 hover:bg-blue-700 rounded-md"
+        >
           Go
         </button>
       </div>

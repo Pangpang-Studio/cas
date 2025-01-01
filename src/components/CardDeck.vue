@@ -16,7 +16,13 @@ const loaded = ref(false)
 loadPack().then((pack) => {
   console.log(pack)
 
-  deck = new Deck(pack.black, pack.white, props.seed, props.nPeople, props.idxPerson)
+  deck = new Deck(
+    pack.black,
+    pack.white,
+    props.seed,
+    props.nPeople,
+    props.idxPerson
+  )
 
   game = new Game(deck, props.cardPerPerson)
 
@@ -104,8 +110,16 @@ function formatCard(card: string) {
         </template>
       </div>
       <div class="btn-row">
-        <button @click="submit" class="basis-0 flex-1 bg-blue-700 hover:bg-blue-800">Submit</button>
-        <button @click="goToNextRound" class="basis-0 flex-1 bg-gray-700 hover:bg-gray-500">
+        <button
+          @click="submit"
+          class="basis-0 flex-1 bg-blue-700 hover:bg-blue-800"
+        >
+          Submit
+        </button>
+        <button
+          @click="goToNextRound"
+          class="basis-0 flex-1 bg-gray-700 hover:bg-gray-500"
+        >
           Next round
         </button>
       </div>
@@ -115,7 +129,9 @@ function formatCard(card: string) {
       <div class="bg-black px-4 py-8 text-xl md:text-3xl bold">
         {{ formatCard(game.blackCard.value.text) }}
       </div>
-      <div class="flex-1 overflow-scroll flex flex-col gap-2 mx-2 md:mx-4 md:gap-4">
+      <div
+        class="flex-1 overflow-scroll flex flex-col gap-2 mx-2 md:mx-4 md:gap-4"
+      >
         <template v-for="(idx, i) in selectedIndices" :key="idx">
           <div
             class="bg-white p-4 md:p-8 rounded-lg text-black text-3xl md:text-4xl font-bold min-h-40 grow flex-shrink-0 flex flex-col"
@@ -125,7 +141,10 @@ function formatCard(card: string) {
             </div>
 
             <!-- Author info -->
-            <div class="text-xs text-gray-500 font-normal" v-if="i === selectedIndices.length - 1">
+            <div
+              class="text-xs text-gray-500 font-normal"
+              v-if="i === selectedIndices.length - 1"
+            >
               cas.rynco.me
             </div>
           </div>
