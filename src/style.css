@@ -9,3 +9,20 @@ body,
   height: 100vh;
   width: 100vw;
 }
+
+h1 {
+  @apply text-3xl pt-6 pb-3;
+}
+
+p {
+  @apply py-3 text-gray-300;
+}
+
+a {
+  @apply underline;
+}
+
+input,
+button {
+  @apply bg-gray-800 text-white p-2 md:p-4 rounded-md transition-colors;
+}
