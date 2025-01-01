@@ -20,7 +20,7 @@ function submit() {
   submittedData.value = {
     seed: seed.value as string,
     nPeople: nPeople.value as number,
-    idxPerson: idxPerson.value as number,
+    idxPerson: (idxPerson.value as number) % (nPeople.value as number),
     cardPerPerson: cardPerPerson.value as number,
   };
   submitted.value = true;
@@ -34,7 +34,7 @@ function submit() {
   >
     <input v-model="seed" placeholder="Enter seed" />
     <input v-model="nPeople" placeholder="Enter number of people" />
-    <input v-model="idxPerson" placeholder="Enter index of person" />
+    <input v-model="idxPerson" placeholder="Enter index of person " />
     <input
       v-model="cardPerPerson"
       placeholder="Enter number of cards per person"
