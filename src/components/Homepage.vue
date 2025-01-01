@@ -29,6 +29,10 @@ function submit() {
   }
   emit('submit', submittedData.value!)
 }
+
+function randomSeed() {
+  seed.value = Math.random().toString(36).substring(2, 7).toUpperCase()
+}
 </script>
 
 <template>
@@ -44,7 +48,12 @@ function submit() {
         </p>
       </div>
       <div class="flex flex-col space-y-4 md:pt-20">
-        <Input v-model="seed" label="Random seed" />
+        <div class="flex gap-2 justify-between items-end" >
+          <Input v-model="seed" label="Random seed" class="flex-grow"/>
+          <button @click="randomSeed" class="dice-button py-2.5 px-3 bg-gray-600 hover:bg-gray-700 rounded-md">
+            <span>🎲</span>
+          </button>
+        </div>
         <Input v-model="nPeople" label="Number of people" />
         <Input v-model="idxPerson" label="Your index within people" />
         <Input v-model="cardPerPerson" label="Number of cards per person" />
@@ -59,5 +68,13 @@ function submit() {
 <style scoped>
 input {
   @apply bg-black border-2 border-gray-500 focus:border-white text-white p-2 rounded-md;
+}
+
+.dice-button span {
+  @apply inline-block transition-transform duration-300 rotate-[360deg];
+}
+
+.dice-button:active span {
+  @apply rotate-0 duration-0;
 }
 </style>
