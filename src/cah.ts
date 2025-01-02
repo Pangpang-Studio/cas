@@ -6,15 +6,58 @@ interface CompactBlackCard {
   pick: number
 }
 
-interface CompactCardPack {
+export interface CompactCardPackCollection {
   white: string[]
   black: CompactBlackCard[]
+  packs: { [key: string]: CardPack }
 }
 
-export async function loadPack(): Promise<CompactCardPack> {
+/**
+ * A card pack, containing a name, description, and card indices within the
+ * `white` and `black` arrays of the parent `CompactCardPackCollection`.
+ */
+export interface CardPack {
+  name: string
+  description: string
+  official: boolean
+  /** White card indices */
+  white: number[]
+  /** Black card indices */
+  black: number[]
+}
+
+export function listPacks(
+  pack: CompactCardPackCollection
+): [string, CardPack][] {
+  return Object.entries(pack.packs)
+}
+
+export interface PackSelection {
+  packName: string
+  collection: CompactCardPackCollection
+}
+
+export function populateDeck(packs: PackSelection[]) {
+  let blackCards: CompactBlackCard[] = []
+  let whiteCards: string[] = []
+
+  for (let { collection, packName } of packs) {
+    let pack = collection.packs[packName]
+    for (let i of pack.white) {
+      whiteCards.push(collection.white[i])
+    }
+    for (let i of pack.black) {
+      blackCards.push(collection.black[i])
+    }
+  }
+
+  return { blackCards, whiteCards }
+}
+
+export async function loadPack(): Promise<CompactCardPackCollection> {
   console.log('Loading pack')
   const f = await fetch('/cah-all-compact.json')
-  return (await f.json()) as CompactCardPack
+  return (await f.json()) as CompactCardPackCollection
 }
 
 function xorshift32(seed: number) {
