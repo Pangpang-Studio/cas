@@ -27,7 +27,7 @@ function xorshift32(seed: number) {
   }
 }
 
-function gen_seed(s: string) {
+function numSeedFromString(s: string) {
   let seed = 0
   for (let i = 0; i < s.length; i++) {
     seed ^= seed << 5
@@ -65,7 +65,7 @@ export class Deck {
     totalPlayers: number,
     playerIndex: number
   ) {
-    const numberSeed = gen_seed(seed)
+    const numberSeed = numSeedFromString(seed)
     this.shuffledBlacks = shuffle(blacks, numberSeed)
     this.shuffledWhites = shuffle(whites, numberSeed)
 
