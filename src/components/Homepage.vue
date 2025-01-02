@@ -41,50 +41,50 @@ async function shareSetup() {
   delete data.idxPerson
   router.push({ query: data })
 
-  let shareUrl = window.location.href
+  // wait a frame while the URL updates
+  requestAnimationFrame(() => {
+    let shareUrl = window.location.href
 
-  // Prefer share API if available
-  if ('share' in (navigator as any)) {
-    requestAnimationFrame(() => {
-      // For some reason we need to wait a frame before calling share
-      let shareUrl = window.location.href
+    // Prefer share API if available
+    if ('share' in (navigator as any)) {
       let shareObj: ShareData = {
         title: 'Cards Against Synchronicity',
         text: 'Join my game!',
         url: shareUrl,
       }
       navigator.share(shareObj)
-    })
-    return
-  }
+      return
+    }
 
-  async function showCopied() {
-    shareButtonTextOverride.value = 'Copied!'
-    setTimeout(() => {
-      shareButtonTextOverride.value = null
-    }, 3000)
-  }
-  // Fallback to clipboard
-  if ('clipboard' in navigator) {
-    navigator.clipboard.writeText(shareUrl)
-    showCopied()
-    return
-  }
-  // fallback to even older clipboard API
-  if ('execCommand' in document) {
-    const input = document.createElement('input')
-    input.value = shareUrl
-    document.body.appendChild(input)
-    input.select()
-    document.execCommand('copy') // deprecated but used for compatibility
-    document.body.removeChild(input)
-    showCopied()
-    return
-  }
+    async function showCopied() {
+      shareButtonTextOverride.value = 'Copied!'
+      setTimeout(() => {
+        shareButtonTextOverride.value = null
+      }, 3000)
+    }
 
-  alert(
-    'Unable to find a good way to share the link. Please manually copy it :)'
-  )
+    // Fallback to clipboard
+    if ('clipboard' in navigator) {
+      navigator.clipboard.writeText(shareUrl)
+      showCopied()
+      return
+    }
+    // fallback to even older clipboard API
+    if ('execCommand' in document) {
+      const input = document.createElement('input')
+      input.value = shareUrl
+      document.body.appendChild(input)
+      input.select()
+      document.execCommand('copy') // deprecated but used for compatibility
+      document.body.removeChild(input)
+      showCopied()
+      return
+    }
+
+    alert(
+      'Unable to find a good way to share the link. Please manually copy it :)'
+    )
+  })
 }
 
 function randomSeed() {
