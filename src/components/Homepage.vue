@@ -3,17 +3,16 @@ import { ref } from 'vue'
 import Input from './Input.vue'
 import { useRouter } from 'vue-router'
 
-export interface SubmitData {
-  seed: string
-  nPeople: number
-  idxPerson: number
-  cardPerPerson: number
-}
+const props = defineProps<{
+  seed?: string
+  nPeople?: number
+  cardPerPerson?: number
+}>()
 
-const seed = ref<string>('')
-const nPeople = ref<number>(4)
+const seed = ref<string>(props.seed ?? '')
+const nPeople = ref<number>(props.nPeople ?? 4)
+const cardPerPerson = ref<number>(props.cardPerPerson ?? 10)
 const idxPerson = ref<number>(0)
-const cardPerPerson = ref<number>(10)
 
 const router = useRouter()
 
