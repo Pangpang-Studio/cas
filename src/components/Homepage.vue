@@ -3,28 +3,47 @@ import { ref } from 'vue'
 import Input from './Input.vue'
 import { useRouter } from 'vue-router'
 
-export interface SubmitData {
-  seed: string
-  nPeople: number
-  idxPerson: number
-  cardPerPerson: number
-}
+const props = defineProps<{
+  seed?: string
+  nPeople?: number
+  cardPerPerson?: number
+}>()
 
-const seed = ref<string>('')
-const nPeople = ref<number>(4)
+const seed = ref<string>(props.seed ?? '')
+const nPeople = ref<number>(props.nPeople ?? 4)
+const cardPerPerson = ref<number>(props.cardPerPerson ?? 10)
 const idxPerson = ref<number>(0)
-const cardPerPerson = ref<number>(10)
+
+const shareButtonTextOverride = ref<string | null>(null)
 
 const router = useRouter()
 
-function submit() {
-  const submittedData = {
+function submittedData() {
+  return {
     seed: seed.value as string,
     nPeople: nPeople.value as number,
     cardPerPerson: cardPerPerson.value as number,
-    idxPerson: (idxPerson.value as number) % (nPeople.value as number),
+    idxPerson: ((idxPerson.value as number) % (nPeople.value as number)) as
+      | number
+      | undefined,
   }
-  router.push({ name: 'game', query: submittedData })
+}
+
+function submit() {
+  router.push({ name: 'game', query: submittedData() })
+}
+
+async function shareSetup() {
+  if (seed.value === '') {
+    randomSeed()
+  }
+  const data = submittedData()
+  delete data.idxPerson
+  router.push({ query: data })
+  navigator.clipboard.writeText(window.location.href)
+  shareButtonTextOverride.value = 'Copied!'
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+  shareButtonTextOverride.value = null
 }
 
 function randomSeed() {
@@ -83,12 +102,21 @@ const authors = [
         <Input v-model="nPeople" label="Number of people" />
         <Input v-model="idxPerson" label="Your index within people" />
         <Input v-model="cardPerPerson" label="Number of cards per person" />
-        <button
-          @click="submit"
-          class="self-stretch p-4 bg-blue-600 hover:bg-blue-700 rounded-md"
-        >
-          Go
-        </button>
+        <div class="flex gap-2 justify-between items-end">
+          <button
+            @click="submit"
+            class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-md"
+          >
+            Play!
+          </button>
+          <button
+            @click="shareSetup"
+            title="Share this setup!"
+            class="flex-1 py-2.5 bg-gray-600 hover:bg-gray-700 rounded-md"
+          >
+            <span>{{ shareButtonTextOverride ?? 'Share' }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
