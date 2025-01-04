@@ -39,5 +39,5 @@ a {
 
 input,
 button {
-  @apply bg-gray-800 text-white p-2 md:p-4 rounded-md transition-colors;
+  @apply bg-gray-700 hover:bg-gray-800 text-white p-2  rounded-md transition-colors;
 }

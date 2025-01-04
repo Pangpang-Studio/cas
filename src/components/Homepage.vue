@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import Input from './Input.vue'
 import { useRouter } from 'vue-router'
+import CardPackList from './CardPackSelector.vue'
+import type { RawPackSelection } from '../cah'
 
 const props = defineProps<{
   seed?: string
@@ -13,10 +15,42 @@ const seed = ref<string>(props.seed ?? '')
 const nPeople = ref<number>(props.nPeople ?? 4)
 const cardPerPerson = ref<number>(props.cardPerPerson ?? 10)
 const idxPerson = ref<number>(0)
-
-const shareButtonTextOverride = ref<string | null>(null)
+const cardSelection = ref<RawPackSelection[]>([])
 
 const router = useRouter()
+
+watch([seed, nPeople, idxPerson, cardPerPerson, cardSelection], () => {
+  // Save to local storage
+  localStorage.setItem(
+    'cah-params',
+    JSON.stringify({
+      seed: seed.value,
+      nPeople: nPeople.value,
+      idxPerson: idxPerson.value,
+      cardPerPerson: cardPerPerson.value,
+      cardSelection: cardSelection.value,
+    })
+  )
+  console.log('Saved params to local storage')
+})
+
+function loadFromLocalStorage() {
+  const savedData = localStorage.getItem('cah-params')
+  if (savedData) {
+    const parsedData = JSON.parse(savedData)
+    seed.value = parsedData.seed
+    nPeople.value = parsedData.nPeople
+    idxPerson.value = parsedData.idxPerson
+    cardPerPerson.value = parsedData.cardPerPerson
+    cardSelection.value = parsedData.cardSelection
+  }
+}
+
+onMounted(() => {
+  loadFromLocalStorage()
+})
+
+const shareButtonTextOverride = ref<string | null>(null)
 
 function submittedData() {
   return {
@@ -26,10 +60,31 @@ function submittedData() {
     idxPerson: ((idxPerson.value as number) % (nPeople.value as number)) as
       | number
       | undefined,
+    cardSelection: JSON.stringify(cardSelection.value) as string,
   }
 }
 
 function submit() {
+  // Sanity check
+  if (nPeople.value <= 0 || cardPerPerson.value <= 0) {
+    alert('Number of people and cards per person must be positive integers')
+    return
+  }
+  if (idxPerson.value < 0 || idxPerson.value > nPeople.value) {
+    alert(
+      `Your index must be between 0 and the number of people (${nPeople.value})`
+    )
+    return
+  }
+  if (!seed.value) {
+    alert('Please enter a seed')
+    return
+  }
+  if (cardSelection.value.length === 0) {
+    alert('Please select at least one card pack')
+    return
+  }
+
   router.push({ name: 'game', query: submittedData() })
 }
 
@@ -131,6 +186,7 @@ const authors = [
         </div>
       </div>
       <div class="flex flex-col space-y-4 md:pt-20">
+        <CardPackList v-model="cardSelection" />
         <div class="flex gap-2 justify-between items-end">
           <Input v-model="seed" label="Random seed" class="flex-grow" />
           <button
