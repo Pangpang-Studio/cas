@@ -52,6 +52,26 @@ onMounted(() => {
 })
 
 function submit() {
+  // Sanity check
+  if (nPeople.value <= 0 || cardPerPerson.value <= 0) {
+    alert('Number of people and cards per person must be positive integers')
+    return
+  }
+  if (idxPerson.value < 0 || idxPerson.value > nPeople.value) {
+    alert(
+      `Your index must be between 0 and the number of people (${nPeople.value})`
+    )
+    return
+  }
+  if (!seed.value) {
+    alert('Please enter a seed')
+    return
+  }
+  if (cardSelection.value.length === 0) {
+    alert('Please select at least one card pack')
+    return
+  }
+
   const submittedData = {
     seed: seed.value as string,
     nPeople: nPeople.value as number,
