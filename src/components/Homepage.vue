@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import Input from './Input.vue'
 import { useRouter } from 'vue-router'
 import CardPackList from './CardPackSelector.vue'
@@ -16,8 +16,40 @@ const seed = ref<string>('')
 const nPeople = ref<number>(4)
 const idxPerson = ref<number>(0)
 const cardPerPerson = ref<number>(10)
+const cardSelection = ref<RawPackSelection[]>([])
 
 const router = useRouter()
+
+watch([seed, nPeople, idxPerson, cardPerPerson, cardSelection], () => {
+  // Save to local storage
+  localStorage.setItem(
+    'cah-params',
+    JSON.stringify({
+      seed: seed.value,
+      nPeople: nPeople.value,
+      idxPerson: idxPerson.value,
+      cardPerPerson: cardPerPerson.value,
+      cardSelection: cardSelection.value,
+    })
+  )
+  console.log('Saved params to local storage')
+})
+
+function loadFromLocalStorage() {
+  const savedData = localStorage.getItem('cah-params')
+  if (savedData) {
+    const parsedData = JSON.parse(savedData)
+    seed.value = parsedData.seed
+    nPeople.value = parsedData.nPeople
+    idxPerson.value = parsedData.idxPerson
+    cardPerPerson.value = parsedData.cardPerPerson
+    cardSelection.value = parsedData.cardSelection
+  }
+}
+
+onMounted(() => {
+  loadFromLocalStorage()
+})
 
 function submit() {
   const submittedData = {
@@ -45,8 +77,6 @@ const authors = [
   },
   { name: 'Icecovery', link: 'https://github.com/icecovery' },
 ]
-
-const cardSelection = ref<RawPackSelection[]>([])
 </script>
 
 <template>
