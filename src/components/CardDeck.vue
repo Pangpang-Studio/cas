@@ -1,33 +1,46 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Deck, Game, loadPack } from '../cah'
+import { computed, ref, watch } from 'vue'
+import { Deck, Game, populateDeck, type RawPackSelection } from '../cah'
+import { globalCardPacks } from '../cardPackManager'
 
 const props = defineProps<{
   seed: string
   nPeople: number
   idxPerson: number
   cardPerPerson: number
+  cardSelection: string
 }>()
+
+const rawCardSelection = computed(
+  () => JSON.parse(props.cardSelection) as RawPackSelection[]
+)
 
 let deck: Deck | null = null
 let game: Game | null = null
 const loaded = ref(false)
 
-loadPack().then((pack) => {
-  console.log(pack)
+watch(
+  rawCardSelection,
+  (newSelection) => {
+    let concreteSelecitons = globalCardPacks.selectionFromRaw(newSelection)
+    let { blackCards, whiteCards } = populateDeck(concreteSelecitons)
 
-  deck = new Deck(
-    pack.black,
-    pack.white,
-    props.seed,
-    props.nPeople,
-    props.idxPerson
-  )
+    deck = new Deck(
+      blackCards,
+      whiteCards,
+      props.seed,
+      props.nPeople,
+      props.idxPerson
+    )
 
-  game = new Game(deck, props.cardPerPerson)
+    game = new Game(deck, props.cardPerPerson)
 
-  loaded.value = true
-})
+    loaded.value = true
+  },
+  {
+    immediate: true,
+  }
+)
 
 const selectedIndices = ref<number[]>([])
 

@@ -32,6 +32,11 @@ export function listPacks(
   return Object.entries(pack.packs)
 }
 
+export interface RawPackSelection {
+  packCollection: string
+  pack: string
+}
+
 export interface PackSelection {
   packName: string
   collection: CompactCardPackCollection

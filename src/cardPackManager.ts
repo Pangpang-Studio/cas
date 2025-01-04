@@ -1,7 +1,11 @@
 // Manages the card packs and their contents
 
 import { ref } from 'vue'
-import type { CompactCardPackCollection } from './cah'
+import type {
+  CompactCardPackCollection,
+  PackSelection,
+  RawPackSelection,
+} from './cah'
 
 export interface CardPackSource {
   name: string
@@ -20,12 +24,6 @@ export const preexistingCardPacks: CardPackSource[] = [
 
 function localStorageCardPackName(name: string) {
   return `cardPacks/${name}`
-}
-
-export async function downloadCardPack(source: CardPackSource) {
-  const { name, url } = source
-  const response = await fetch(url)
-  const data = await response.json()
 }
 
 /**
@@ -50,6 +48,10 @@ export class CardPackManager {
     }
   }
 
+  getPack(name: string): CompactCardPackCollection | undefined {
+    return this.loadedPacks.value.get(name)
+  }
+
   /**
    * Downloads a card pack and caches it in local storage. If the pack is already
    * cached, it will be overwritten.
@@ -66,6 +68,16 @@ export class CardPackManager {
   async deletePack(name: string) {
     this.loadedPacks.value.delete(name)
     localStorage.removeItem(localStorageCardPackName(name))
+  }
+
+  selectionFromRaw(sel: RawPackSelection[]): PackSelection[] {
+    return sel.map(({ packCollection, pack }) => {
+      const collection = this.loadedPacks.value.get(packCollection)
+      if (!collection) {
+        throw new Error(`Pack collection '${packCollection}' not found`)
+      }
+      return { packName: pack, collection }
+    })
   }
 }
 

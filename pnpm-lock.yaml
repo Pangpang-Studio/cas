@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@headlessui/vue':
+        specifier: ^1.7.23
+        version: 1.7.23(vue@3.5.13(typescript@5.6.3))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -216,6 +219,12 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@headlessui/vue@1.7.23':
+    resolution: {integrity: sha512-JzdCNqurrtuu0YW6QaDtR2PIYCKPUWq28csDyMvN4zmGccmE7lz40Is6hc3LA4HFeCI7sekZ/PQMTNmn9I/4Wg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      vue: ^3.2.0
+
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
@@ -348,6 +357,14 @@ packages:
     resolution: {integrity: sha512-+10CMg9vt1MoHj6x1pxyjPSMjHTIlqs8/tBztXvPAx24SKs9jwVnKqHJumlH/IzhaPUaj3T6T6wfZr8okdXaIg==}
     cpu: [x64]
     os: [win32]
+
+  '@tanstack/virtual-core@3.11.2':
+    resolution: {integrity: sha512-vTtpNt7mKCiZ1pwU9hfKPhpdVO2sVzFQsxoVBGtOSHxlrRRzYr8iQ2TlwbAcRYCcEiZ9ECAM8kBzH0v2+VzfKw==}
+
+  '@tanstack/vue-virtual@3.11.2':
+    resolution: {integrity: sha512-y0b1p1FTlzxcSt/ZdGWY1AZ52ddwSU69pvFRYAELUSdLLxV8QOPe9dyT/KATO43UCb3DAwiyzi96h2IoYstBOQ==}
+    peerDependencies:
+      vue: ^2.7.0 || ^3.0.0
 
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
@@ -1038,6 +1055,11 @@ snapshots:
   '@esbuild/win32-x64@0.24.2':
     optional: true
 
+  '@headlessui/vue@1.7.23(vue@3.5.13(typescript@5.6.3))':
+    dependencies:
+      '@tanstack/vue-virtual': 3.11.2(vue@3.5.13(typescript@5.6.3))
+      vue: 3.5.13(typescript@5.6.3)
+
   '@isaacs/cliui@8.0.2':
     dependencies:
       string-width: 5.1.2
@@ -1135,6 +1157,13 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.29.1':
     optional: true
+
+  '@tanstack/virtual-core@3.11.2': {}
+
+  '@tanstack/vue-virtual@3.11.2(vue@3.5.13(typescript@5.6.3))':
+    dependencies:
+      '@tanstack/virtual-core': 3.11.2
+      vue: 3.5.13(typescript@5.6.3)
 
   '@types/estree@1.0.6': {}
 

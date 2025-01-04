@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import Input from './Input.vue'
 import { useRouter } from 'vue-router'
 import CardPackList from './CardPackSelector.vue'
+import type { RawPackSelection } from '../cah'
 
 export interface SubmitData {
   seed: string
@@ -24,6 +25,7 @@ function submit() {
     nPeople: nPeople.value as number,
     cardPerPerson: cardPerPerson.value as number,
     idxPerson: (idxPerson.value as number) % (nPeople.value as number),
+    cardSelection: JSON.stringify(cardSelection.value),
   }
   router.push({ name: 'game', query: submittedData })
 }
@@ -43,6 +45,8 @@ const authors = [
   },
   { name: 'Icecovery', link: 'https://github.com/icecovery' },
 ]
+
+const cardSelection = ref<RawPackSelection[]>([])
 </script>
 
 <template>
@@ -73,7 +77,7 @@ const authors = [
       </div>
       <div class="flex flex-col space-y-4 md:pt-20">
         <h2 class="text-2xl font-bold">Card Pack Selector</h2>
-        <CardPackList />
+        <CardPackList v-model="cardSelection" />
         <h2 class="text-2xl font-bold">Various Tweakable Parameters</h2>
         <div class="flex gap-2 justify-between items-end">
           <Input v-model="seed" label="Random seed" class="flex-grow" />
