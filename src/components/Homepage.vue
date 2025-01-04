@@ -126,9 +126,7 @@ const authors = [
         </div>
       </div>
       <div class="flex flex-col space-y-4 md:pt-20">
-        <h2 class="text-2xl font-bold">Card Pack Selector</h2>
         <CardPackList v-model="cardSelection" />
-        <h2 class="text-2xl font-bold">Various Tweakable Parameters</h2>
         <div class="flex gap-2 justify-between items-end">
           <Input v-model="seed" label="Random seed" class="flex-grow" />
           <button
