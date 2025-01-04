@@ -3,7 +3,12 @@ import CardDeck from './components/CardDeck.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
-  { path: '/', name: 'home', component: Homepage },
+  {
+    path: '/',
+    name: 'home',
+    component: Homepage,
+    props: (route: { query: Record<string, any> }) => route.query,
+  },
   {
     path: '/game',
     name: 'game',
