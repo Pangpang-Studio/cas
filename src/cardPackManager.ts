@@ -22,8 +22,10 @@ export const preexistingCardPacks: CardPackSource[] = [
   },
 ]
 
+const localStorageCardPackPrefix = 'cardPacks/'
+
 function localStorageCardPackName(name: string) {
-  return `cardPacks/${name}`
+  return localStorageCardPackPrefix + name
 }
 
 /**
@@ -40,7 +42,7 @@ export class CardPackManager {
     this.loadedPacks.value.clear()
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i)
-      if (key?.startsWith('cardPacks/')) {
+      if (key?.startsWith(localStorageCardPackPrefix)) {
         const name = key.slice(10)
         const data = localStorage.getItem(key)
         this.loadedPacks.value.set(name, JSON.parse(data!))
