@@ -3,7 +3,6 @@ import { computed, reactive, ref, watch } from 'vue'
 import type {
   CardPack,
   CompactCardPackCollection,
-  PackSelection,
   RawPackSelection,
 } from '../cah'
 import {
