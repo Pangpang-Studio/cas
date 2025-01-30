@@ -222,7 +222,9 @@ const totalSelectedWhiteCardCount = computed(() => {
               {{ totalSelectedBlackCardCount }} black cards.
             </template>
             <template v-else> No pack selected </template>
-            <button @click="submit">Finish</button>
+            <button @click="submit" class="bg-blue-600 hover:bg-blue-700">
+              Done!
+            </button>
           </div>
         </div>
       </DialogPanel>
