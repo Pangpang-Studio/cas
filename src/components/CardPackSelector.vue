@@ -122,7 +122,12 @@ const totalSelectedWhiteCardCount = computed(() => {
 <template>
   <div class="flex flex-row gap-4 items-center">
     <div class="grow">
-      <template v-if="selectedCardPackCount > 0">
+      <template
+        v-if="
+          (submittedSelectedPacks && submittedSelectedPacks.length > 0) ||
+          (dialogOpen && selectedCardPackCount > 0)
+        "
+      >
         {{ selectedCardPackCount }} pack(s) selected. That's
         {{ totalSelectedWhiteCardCount }} white cards and
         {{ totalSelectedBlackCardCount }} black cards.
